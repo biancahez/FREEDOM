@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FREEDOMS</title>
+    <style>
+      @font-face {
+        font-family: "Galano";
+        src: url("./fonts/GalanoGrotesqueMedium.otf") format("opentype");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Galano";
+        src: url("./fonts/GalanoGrotesqueSemiBold.otf") format("opentype");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Galano";
+        src: url("./fonts/GalanoGrotesqueMediumItalic.otf") format("opentype");
+        font-weight: 500;
+        font-style: italic;
+        font-display: swap;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #a8a6d3;
+        min-height: 100vh;
+        font-family: "Galano", "Segoe UI", Roboto, system-ui, sans-serif;
+        font-weight: 500;
+        color: #fee62d;
+        position: relative;
+        overflow: hidden;
+        opacity: 1;
+        transition: opacity 0.4s ease; /* ← 淡出过渡 */
+      }
+
+      /* 淡出时额外加一个缩放，更有“推进去”的感觉 */
+      body.fade-out {
+        opacity: 0;
+        transform: scale(0.96);
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease;
+      }
+
+      /* ===== 两行平行滚动条 ===== */
+      .marquee-row {
+        position: fixed;
+        left: 0;
+        right: 0;
+        height: 28vh;
+        display: flex;
+        align-items: center;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      .marquee-row.top {
+        top: 0;
+      }
+      .marquee-row.bottom {
+        bottom: 0;
+      }
+
+      .marquee-track {
+        display: flex;
+        gap: 0;
+        width: max-content;
+        animation: scrollLeft 40s linear infinite;
+      }
+      .marquee-row.bottom .marquee-track {
+        animation: scrollRight 40s linear infinite;
+      }
+
+      @keyframes scrollLeft {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes scrollRight {
+        0% {
+          transform: translateX(-50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .marquee-track img {
+        height: 100%;
+        width: auto;
+        display: block;
+        flex-shrink: 0;
+        opacity: 0.95;
+      }
+
+      /* ===== 中间前景 ===== */
+      .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 600px;
+        padding: 0 1.5rem;
+      }
+
+      h1 {
+        font-weight: 600;
+        letter-spacing: 6px;
+        font-size: 7rem;
+        color: #fee62d;
+        text-align: center;
+        text-shadow: 0 2px 30px rgba(168, 166, 211, 1);
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      .question {
+        margin-top: 1rem;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        opacity: 0.95;
+        text-align: center;
+        font-style: italic;
+        font-weight: 500;
+      }
+
+      .spacer {
+        height: 2rem;
+      }
+
+      .input-area {
+        display: flex;
+        gap: 0.8rem;
+        width: 100%;
+        max-width: 420px;
+        justify-content: center;
+      }
+
+      .name-input {
+        flex: 1;
+        background: rgba(168, 166, 211, 0.85);
+        border: 2px solid rgba(254, 230, 45, 0.9);
+        border-radius: 0.6rem;
+        padding: 0.8rem 1.4rem;
+        font-family: inherit;
+        font-size: 1.05rem;
+        color: #fee62d;
+        letter-spacing: 1px;
+        outline: none;
+        transition: all 0.2s ease;
+        backdrop-filter: blur(4px);
+      }
+      .name-input::placeholder {
+        color: rgba(254, 230, 45, 0.65);
+        font-style: italic;
+      }
+      .name-input:focus {
+        background: rgba(168, 166, 211, 0.95);
+        box-shadow: 0 0 25px rgba(254, 230, 45, 0.4);
+      }
+
+      .btn {
+        background: #fee62d;
+        border: 2px solid #fee62d;
+        color: #a8a6d3;
+        font-family: inherit;
+        font-size: 1.15rem;
+        font-weight: 600;
+        padding: 0.8rem 1.6rem;
+        border-radius: 0.6rem;
+        cursor: pointer;
+        letter-spacing: 2px;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .btn:hover:not(:disabled) {
+        background: transparent;
+        color: #fee62d;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(254, 230, 45, 0.5);
+      }
+      .btn:active:not(:disabled) {
+        transform: translateY(1px);
+      }
+
+      .hint {
+        margin-top: 1.2rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        letter-spacing: 1px;
+        text-align: center;
+        min-height: 1.5rem;
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 4rem;
+          letter-spacing: 4px;
+        }
+        .question {
+          font-size: 1rem;
+        }
+        .input-area {
+          flex-direction: column;
+          align-items: center;
+        }
+        .name-input {
+          width: 100%;
+          text-align: center;
+        }
+        .btn {
+          width: 100%;
+        }
+        .marquee-row {
+          height: 20vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="marquee-row top">
+      <div class="marquee-track" id="trackTop"></div>
+    </div>
+
+    <div class="marquee-row bottom">
+      <div class="marquee-track" id="trackBottom"></div>
+    </div>
+
+    <div class="content">
+      <h1>FREEDOMS</h1>
+      <div class="question">What does your freedom look like?</div>
+      <div class="spacer"></div>
+
+      <div class="input-area">
+        <input
+          type="text"
+          class="name-input"
+          id="nameInput"
+          placeholder="Enter your name"
+          maxlength="20"
+          autocomplete="off"
+        />
+        <button class="btn" id="startBtn">DRAW</button>
+      </div>
+
+      <div class="hint" id="hint"></div>
+    </div>
+
+    <script>
+      (function () {
+        const FLOAT_IMAGES = [
+          "./front/1.png",
+          "./front/2.png",
+          "./front/3.png",
+          "./front/4.png",
+          "./front/5.png",
+          "./front/6.png",
+          "./front/7.png",
+          "./front/8.png",
+          "./front/9.png",
+          "./front/10.png",
+          "./front/11.png",
+          "./front/12.png",
+          "./front/13.png",
+          "./front/14.png",
+          "./front/15.png",
+          "./front/16.png",
+          "./front/17.png",
+          "./front/18.png",
+          "./front/19.png",
+          "./front/20.png",
+          "./front/21.png",
+          "./front/22.png",
+          "./front/23.png",
+          "./front/24.png",
+          "./front/25.png",
+          "./front/26.png",
+          "./front/27.png",
+          "./front/28.png",
+          "./front/29.png",
+          "./front/30.png",
+          "./front/31.png",
+          "./front/32.png",
+          "./front/33.png",
+          "./front/34.png",
+          "./front/35.png",
+          "./front/36.png",
+          "./front/37.png",
+          "./front/38.png",
+          "./front/39.png",
+          "./front/40.png",
+          "./front/41.png",
+        ];
+
+        const trackTop = document.getElementById("trackTop");
+        const trackBottom = document.getElementById("trackBottom");
+        const nameInput = document.getElementById("nameInput");
+        const startBtn = document.getElementById("startBtn");
+        const hintEl = document.getElementById("hint");
+
+        function getRowHeight() {
+          const row = document.querySelector(".marquee-row");
+          return row ? row.clientHeight : 0;
+        }
+
+        function createRotatedImg(src, rowHeight) {
+          const wrapper = document.createElement("span");
+          wrapper.style.display = "inline-block";
+          wrapper.style.height = rowHeight + "px";
+          wrapper.style.position = "relative";
+          wrapper.style.flexShrink = "0";
+          wrapper.style.overflow = "visible";
+
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "";
+          img.onerror = function () {
+            console.error("❌ 图片加载失败：", this.src);
+          };
+
+          img.onload = function () {
+            const naturalW = this.naturalWidth;
+            const naturalH = this.naturalHeight;
+            if (!naturalW || !naturalH) return;
+
+            const targetH = rowHeight;
+            const scale = targetH / naturalW;
+            const targetW = naturalH * scale;
+
+            this.style.width = targetH + "px";
+            this.style.height = targetW + "px";
+            this.style.position = "absolute";
+            this.style.top = "50%";
+            this.style.left = "50%";
+            this.style.transform = "translate(-50%, -50%) rotate(90deg)";
+            this.style.display = "block";
+
+            wrapper.style.width = targetW + "px";
+          };
+
+          wrapper.appendChild(img);
+          return wrapper;
+        }
+
+        function fillRow(track) {
+          if (!track) return;
+          track.innerHTML = "";
+
+          const rowHeight = getRowHeight();
+
+          const shuffled = [...FLOAT_IMAGES];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+
+          shuffled.forEach((src) => {
+            track.appendChild(createRotatedImg(src, rowHeight));
+          });
+          shuffled.forEach((src) => {
+            track.appendChild(createRotatedImg(src, rowHeight));
+          });
+        }
+
+        function goToResult() {
+          const name = nameInput.value.trim();
+          if (!name) {
+            hintEl.textContent = "Please enter your name first ✨";
+            nameInput.focus();
+            nameInput.style.borderColor = "#ff9f9f";
+            setTimeout(() => {
+              nameInput.style.borderColor = "rgba(254, 230, 45, 0.9)";
+            }, 400);
+            return;
+          }
+
+          // ✨ 丝滑过渡：淡出 + 缩小
+          document.body.classList.add("fade-out");
+
+          setTimeout(() => {
+            window.location.href = `result.html?name=${encodeURIComponent(name)}`;
+          }, 400);
+        }
+
+        startBtn.addEventListener("click", goToResult);
+        nameInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") goToResult();
+        });
+
+        requestAnimationFrame(() => {
+          fillRow(trackTop);
+          fillRow(trackBottom);
+        });
+      })();
+    </script>
+  </body>
+</html>
