@@ -47,7 +47,7 @@
         position: relative;
         overflow: auto;
 
-        /* ✨ 淡入淡出基础 */
+        /* 淡入淡出基础 */
         opacity: 0;
         transition: opacity 0.5s ease;
       }
@@ -56,7 +56,6 @@
         opacity: 1;
       }
 
-      /* ✨ 淡出时用这个类 */
       body.fade-out {
         opacity: 0;
         transition: opacity 0.4s ease;
@@ -146,9 +145,9 @@
         transition: transform 0.2s ease;
       }
 
+      /* 抽满 8 张后：只是不能再点，外观完全不变 */
       .card.locked {
         cursor: default;
-        filter: grayscale(0.2) brightness(0.8);
       }
 
       .card-inner {
@@ -583,7 +582,7 @@
           return a;
         }
 
-        // ============ 预加载：最多等 1.5 秒，超时就先显示 ============
+        // 预加载：最多等 1.5 秒，超时就先显示
         function preloadImages() {
           return new Promise((resolve) => {
             let loaded = 0;
@@ -803,7 +802,7 @@
             if (drawnCount >= DRAW_LIMIT) {
               againBtn.disabled = true;
               againBtn.textContent = "LIMIT REACHED";
-              cardEl.classList.add("locked");
+              // ✨ 不再加 locked 类，卡牌不会变暗
               tapHint.textContent = "All 8 cards drawn! Press START OVER.";
             } else {
               againBtn.disabled = false;
@@ -916,7 +915,7 @@
         cardEl.addEventListener("click", onCardClick);
         againBtn.addEventListener("click", onDrawAgain);
 
-        // ✨ START OVER：先淡出，再跳转
+        // START OVER：先淡出，再跳转
         homeBtn.addEventListener("click", () => {
           localStorage.removeItem(STORAGE_KEY);
 
