@@ -462,7 +462,11 @@
           <button class="collection-close" id="collectionClose">✕</button>
         </div>
         <div class="collection-grid" id="collectionGrid"></div>
-        <div class="collection-empty" id="collectionEmpty" style="display:none;">
+        <div
+          class="collection-empty"
+          id="collectionEmpty"
+          style="display: none"
+        >
           Nothing collected yet. Draw a card first!
         </div>
       </div>
@@ -475,15 +479,15 @@
     <script>
       (function () {
         const cards = [
-          { front: "./front/1.png",  back: "./back/1back.png"  },
-          { front: "./front/2.png",  back: "./back/2back.png"  },
-          { front: "./front/3.png",  back: "./back/3back.png"  },
-          { front: "./front/4.png",  back: "./back/4back.png"  },
-          { front: "./front/5.png",  back: "./back/5back.png"  },
-          { front: "./front/6.png",  back: "./back/6back.png"  },
-          { front: "./front/7.png",  back: "./back/7back.png"  },
-          { front: "./front/8.png",  back: "./back/8back.png"  },
-          { front: "./front/9.png",  back: "./back/9back.png"  },
+          { front: "./front/1.png", back: "./back/1back.png" },
+          { front: "./front/2.png", back: "./back/2back.png" },
+          { front: "./front/3.png", back: "./back/3back.png" },
+          { front: "./front/4.png", back: "./back/4back.png" },
+          { front: "./front/5.png", back: "./back/5back.png" },
+          { front: "./front/6.png", back: "./back/6back.png" },
+          { front: "./front/7.png", back: "./back/7back.png" },
+          { front: "./front/8.png", back: "./back/8back.png" },
+          { front: "./front/9.png", back: "./back/9back.png" },
           { front: "./front/10.png", back: "./back/10back.png" },
           { front: "./front/11.png", back: "./back/11back.png" },
           { front: "./front/12.png", back: "./back/12back.png" },
@@ -617,7 +621,8 @@
           for (let i = 0; i < FLOAT_COUNT; i++) {
             const img = document.createElement("img");
             img.className = "float-item";
-            const src = FLOAT_IMAGES[Math.floor(Math.random() * FLOAT_IMAGES.length)];
+            const src =
+              FLOAT_IMAGES[Math.floor(Math.random() * FLOAT_IMAGES.length)];
             img.src = src;
             img.alt = "";
             img.onerror = function () {
@@ -646,11 +651,14 @@
 
             items.push({
               el: img,
-              x, y,
+              x,
+              y,
               w: size,
               h: size * 1.1875,
-              vx, vy,
-              rotation, rotSpeed,
+              vx,
+              vy,
+              rotation,
+              rotSpeed,
               opacityBase: 0.2 + Math.random() * 0.15,
               fadePhase: Math.random() * Math.PI * 2,
               fadeSpeed: 0.5 + Math.random() * 1.0,
@@ -671,9 +679,9 @@
               const opacity = it.opacityBase + Math.sin(it.fadePhase) * 0.1;
 
               const margin = 50;
-              const offLeft   = it.x < -it.w - margin;
-              const offRight  = it.x > window.innerWidth + margin;
-              const offTop    = it.y < -it.h - margin;
+              const offLeft = it.x < -it.w - margin;
+              const offRight = it.x > window.innerWidth + margin;
+              const offTop = it.y < -it.h - margin;
               const offBottom = it.y > window.innerHeight + margin;
 
               if (offLeft || offRight || offTop || offBottom) {
@@ -702,7 +710,8 @@
                 it.h = newSize * 1.1875;
                 it.el.style.width = newSize + "px";
                 it.el.style.height = newSize * 1.1875 + "px";
-                it.el.src = FLOAT_IMAGES[Math.floor(Math.random() * FLOAT_IMAGES.length)];
+                it.el.src =
+                  FLOAT_IMAGES[Math.floor(Math.random() * FLOAT_IMAGES.length)];
               }
 
               it.el.style.transform = `translate(${it.x}px, ${it.y}px) rotate(${it.rotation}deg)`;
